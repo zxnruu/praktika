@@ -1,0 +1,884 @@
+{
+  "name": "Telegram Recipe Bot - Memory Storage",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "Привет! 👋 Я бот для рецептов.  📋 Что я умею: • Сохранять ваши продукты • Искать рецепты по вашим продуктам  Отправь /help для списка команд",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        -624
+      ],
+      "id": "75c51d8d-514a-4f32-abca-8fe7200b709f",
+      "name": "Send a text message",
+      "webhookId": "f7152800-449f-4a0c-b69e-15d51eaf1ff2",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "🍳 *Доступные команды:*  /start - Начать работу /help - Эта справка   /add [продукт] - Добавить продукт /myproducts - Показать мои продукты /recipe - Найти рецепты  *Пример:* /add яйца /add молоко /recipe",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        -480
+      ],
+      "id": "83d8bbc6-1ad3-4428-866f-1ebfc84d2afc",
+      "name": "Send a text message1",
+      "webhookId": "dc3851fc-4510-4492-8c71-fba4a0cd8741",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "=519855715",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        -320
+      ],
+      "id": "4e58a8da-fa73-455c-b087-d9b27b8d280b",
+      "name": "Send a text message2",
+      "webhookId": "4f996f8c-aa8c-4a1f-bf33-d51ac3d0edcf",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        128
+      ],
+      "id": "49685d3b-8068-4e6f-b9ea-427ad4e5ab47",
+      "name": "Telegram Trigger",
+      "webhookId": "d3905e52-b51a-4029-906b-e3dbfcdfd828",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    },
+                    "id": "d154ce78-3e60-4da7-a179-263b6b077367"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "48bfd8cc-d4dc-46e8-a342-241501682a97",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/help",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cf740375-e4c8-46ab-96ab-2f2759e332f8",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/add",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "466ac973-da4a-4bbe-bcb5-d503998fb99b",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/myproducts",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f93a8d24-94f5-4948-9996-bacc6c04c7dd",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/recipe",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ff7f320f-5338-4ff5-a153-bb1b45d9e889",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/clear",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -256,
+        112
+      ],
+      "id": "32e2f72a-3943-4241-b61e-6ce80e7c51c9",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        -128
+      ],
+      "id": "b914b5ac-cc49-4e72-9d5c-558f12a6e622",
+      "name": "Send a text message3",
+      "webhookId": "2dc22ce2-cf1a-49e8-b12f-7a3b3894ad1e",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst allInputs = $input.all();\n\n\nif (allInputs.length < 2) {\n\n    const inputData = allInputs[0]?.json || {};\n    const message = inputData.message || inputData;\n    \n    const text = message.text || '';\n    let product = '';\n    \n    if (text.startsWith('/add ')) {\n        product = text.substring(5).trim().toLowerCase();\n    } else {\n        product = text.replace('/add', '').trim().toLowerCase();\n    }\n    \n    return [{\n        json: {\n            charId: message.chat?.id || message.from?.id || 'unknown',\n            text: `Продукт \"${product}\" сохранен в Google Sheets`\n        }\n    }];\n} else {\n\n    const message = allInputs[1]?.json?.message || allInputs[1]?.json || {};\n    \n    const text = message.text || '';\n    let product = '';\n    \n    if (text.startsWith('/add ')) {\n        product = text.substring(5).trim().toLowerCase();\n    } else {\n        product = text.replace('/add', '').trim().toLowerCase();\n    }\n    \n    return [{\n        json: {\n            charId: message.chat?.id || message.from?.id || 'unknown',\n            text: `Продукт \"${product}\" сохранен в Google Sheets`\n        }\n    }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -320
+      ],
+      "id": "8f310b26-deb0-4433-9196-878dd4a10cd5",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst telegramData = $input.first().json || {};\nconst chatId = telegramData.message?.chat?.id || 519855715;\nconst text = telegramData.message?.text || '';\n\n\nlet product = '';\nif (text.startsWith('/add ')) {\n    product = text.substring(5).trim();\n} else {\n    product = text.replace('/add', '').trim();\n}\n\n\nproduct = product.toLowerCase();\n\n// Автозамена опечаток\nconst autocorrect = {\n    'сыр': 'сыр', 'cheese': 'сыр',\n    'молоко': 'молоко', 'milk': 'молоко',\n    'яйца': 'яйца', 'яйцо': 'яйца', 'eggs': 'яйца', 'egg': 'яйца',\n    'хлеб': 'хлеб', 'bread': 'хлеб',\n    'помидоры': 'помидоры', 'tomato': 'помидоры', 'tomatoes': 'помидоры',\n    'огурцы': 'огурцы', 'cucumber': 'огурцы',\n    'картошка': 'картофель', 'картофель': 'картофель', 'potato': 'картофель'\n};\n\nif (autocorrect[product]) {\n    product = autocorrect[product];\n}\n\nif (!product) {\n    return [{\n        json: {\n            chatId: chatId,\n            text: \"❌ Укажите продукт\\nНапример: `/add сыр`\"\n        }\n    }];\n}\n\n\nreturn [\n    {\n        json: {\n            chatId: chatId,\n            text: `✅ Добавлено: *${product}*`\n        }\n    },\n    {\n        json: {\n            user_id: chatId,\n            product_name: product,\n            added_at: new Date().toISOString(),\n            chat_id: chatId\n        }\n    }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -208,
+        -320
+      ],
+      "id": "0550e331-c534-4545-8f1a-e183df25e8e3",
+      "name": "add"
+    },
+    {
+      "parameters": {
+        "jsCode": "\ntry {\n    console.log('=== ЗАПУСК /myproducts ===');\n    \n\n    const telegramData = $input.first().json || {};\n    const chatId = telegramData.message?.chat?.id || 519855715;\n    \n    console.log('Chat ID из Telegram:', chatId);\n    console.log('Всего входов:', $input.all().length);\n    \n\n    let allProducts = [];\n    \n\n    for (let i = 0; i < $input.all().length; i++) {\n        const input = $input.all()[i];\n        \n        if (input.json) {\n            console.log(`Вход ${i}:`, JSON.stringify(input.json, null, 2));\n            \n\n            if (Array.isArray(input.json)) {\n                input.json.forEach(item => {\n                    if (item && item.json) {\n                        const row = item.json;\n                        if (String(row.user_id) === String(chatId) && row.product_name) {\n                            allProducts.push(String(row.product_name).trim());\n                        }\n                    }\n                });\n            }\n\n            else if (input.json.user_id && input.json.product_name) {\n                if (String(input.json.user_id) === String(chatId)) {\n                    allProducts.push(String(input.json.product_name).trim());\n                }\n            }\n        }\n    }\n    \n    console.log('Найдено продуктов:', allProducts);\n    \n\n    if (allProducts.length === 0) {\n        return [{\n            json: {\n                chatId: chatId,\n                text: \"📭 *Список пуст*\\n\\nПопробуйте добавить:\\n`/add сыр`\\n`/add молоко`\\n`/add хлеб`\"\n            }\n        }];\n    }\n    \n\n    let reply = \"📋 *Ваши продукты:*\\n\\n\";\n    \n    allProducts.forEach((item, index) => {\n        reply += `${index + 1}. ${item}\\n`;\n    });\n    \n    reply += `\\n✅ Всего: *${allProducts.length}*\\n`;\n    reply += `\\n➕ Добавить: /add [продукт]`;\n    \n    console.log('Отправляем:', reply);\n    \n    return [{\n        json: {\n            chatId: chatId,\n            text: reply\n        }\n    }];\n    \n} catch (error) {\n    console.error('ОШИБКА:', error);\n    return [{\n        json: {\n            chatId: 519855715,\n            text: \"⚠️ Ошибка загрузки списка\"\n        }\n    }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        -144
+      ],
+      "id": "d6e296e5-4fa0-46ac-9240-c710c0673794",
+      "name": "products"
+    },
+    {
+      "parameters": {
+        "jsCode": "// КОД ПОДГОТОВКИ ДЛЯ /clear\nconst telegramData = $input.first().json || {};\nconst chatId = telegramData.message?.chat?.id || 519855715;\n\nconsole.log('=== CLEAR: удаление продуктов пользователя ===', chatId);\n\nreturn [{\n    json: {\n\n        user_id: chatId,\n        \n\n        chatId: chatId,\n        messageId: telegramData.message?.message_id,\n        action: 'clear_products'\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        304
+      ],
+      "id": "262a174b-fe29-4660-b0c5-818bdc86a470",
+      "name": "clear"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8",
+          "mode": "list",
+          "cachedResultName": "Новая таблица",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "user_id": "{{ $json.user_id }}",
+            "product_name": "{{ $json.product_name }}",
+            "added_at": "{{ $json.added_at }}",
+            "chat_id": "{{ $json.chat_id }}",
+            "temp_id": "{{ $json.temp_id }}"
+          },
+          "matchingColumns": [
+            "temp_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product_name",
+              "displayName": "product_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "added_at",
+              "displayName": "added_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "temp_id",
+              "displayName": "temp_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "chatId",
+              "displayName": "chatId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -80,
+        -320
+      ],
+      "id": "3e2c7b15-63b7-4c1f-be7c-47a700702df0",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YF41drX1DFEaKeEg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8",
+          "mode": "list",
+          "cachedResultName": "Новая таблица",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -208,
+        -160
+      ],
+      "id": "ac04ab6a-23d6-4fe8-9689-27521ee5c4c3",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YF41drX1DFEaKeEg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\ntry {\n\n    const aiResponse = $input.first().json || {};\n    const userData = $input.all()[1]?.json || {};\n    const chatId = userData.chatId || userData._userData?.chatId || 519855715;\n    \n\n    let recipeText = '';\n    \n\n    if (aiResponse.output && Array.isArray(aiResponse.output)) {\n        for (const item of aiResponse.output) {\n            if (item && item.content && item.content.text) {\n                recipeText = item.content.text;\n                break;\n            }\n        }\n    }\n    \n\n    if (!recipeText) {\n        const jsonStr = JSON.stringify(aiResponse);\n        // Ищем текст после \"text\":\"\n        const match = jsonStr.match(/\"text\":\"([^\"]+)\"/);\n        if (match) {\n            recipeText = match[1].replace(/\\\\n/g, '\\n').replace(/\\\\\"/g, '\"');\n        }\n    }\n    \n\n    if (!recipeText) {\n        return [{\n            json: {\n                chatId: chatId,\n                text: \"✅ AI сгенерировал рецепт! Посмотрите Output AI-ноды — там есть готовый рецепт.\"\n            }\n        }];\n    }\n    \n\n    return [{\n        json: {\n            chatId: chatId,\n            text: `🍳 *Ваш рецепт:*\\n\\n${recipeText}\\n\\n✅ Готово!`,\n            parse_mode: 'Markdown'\n        }\n    }];\n    \n} catch (error) {\n    console.error('Ошибка:', error);\n    return [{ json: { chatId: 519855715, text: \"✅ AI работает! Рецепт в Output.\" } }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        144
+      ],
+      "id": "abc6cfd7-5cd6-464b-aaa6-67494831ad40",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst telegramData = $input.first().json || {};\nconst chatId = telegramData.message?.chat?.id || 519855715;\n\n\nlet products = [];\nfor (let i = 1; i < $input.all().length; i++) {\n    const input = $input.all()[i];\n    if (input?.json && String(input.json.user_id) === String(chatId) && input.json.product_name) {\n        let p = String(input.json.product_name).trim().toLowerCase();\n        const fix = {'cbp':'сыр', 'monoko':'молоко', 'aiiya':'яйца', 'o':''};\n        p = fix[p] || p;\n        if (p && p !== 'o') products.push(p);\n    }\n}\n\nconst uniqueProducts = [...new Set(products.filter(p => p))];\n\n\nif (uniqueProducts.length === 0) {\n    return [{ json: { chatId: chatId, text: \"📭 Нет продуктов!\" } }];\n}\n\n\nreturn [{\n    json: {\n        prompt: `Рецепт из: ${uniqueProducts.join(', ')}. На русском.`,\n        temperature: 0.7\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        160
+      ],
+      "id": "7f7189ac-4bbb-4ca8-8708-d4f5117e2f98",
+      "name": "recipe"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        848,
+        112
+      ],
+      "id": "b6b3c213-b823-4639-ac72-057d19e24942",
+      "name": "Send a text message4",
+      "webhookId": "279a0fd7-11d2-41dc-a482-8a16b0bd0dc1",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "GPT-5-NANO"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "builtInTools": {
+          "webSearch": {
+            "searchContextSize": "medium"
+          }
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        176
+      ],
+      "id": "ec6a7523-db52-474b-8a9c-b2e905df5c84",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "zMnUva8SGhBluYaI",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        416
+      ],
+      "id": "c4cc5798-c440-49d0-bc5c-78a22c5c3cc2",
+      "name": "Send a text message5",
+      "webhookId": "2dc22ce2-cf1a-49e8-b12f-7a3b3894ad1e",
+      "credentials": {
+        "telegramApi": {
+          "id": "VLqkoZon6BsMRHsZ",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8",
+          "mode": "list",
+          "cachedResultName": "Новая таблица",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "user_id",
+              "lookupValue": "={{ $json.message.from.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -32,
+        80
+      ],
+      "id": "c1e67af1-e748-46da-a43f-c144def5f602",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YF41drX1DFEaKeEg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8",
+          "mode": "list",
+          "cachedResultName": "Новая таблица",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Лист1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit#gid=0"
+        },
+        "numberToDelete": 3
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        384
+      ],
+      "id": "90e91021-34b6-45f3-a96e-58015232cb0b",
+      "name": "Delete rows or columns from sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YF41drX1DFEaKeEg",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst inputData = $input.first().json || {};\nconst chatId = inputData.chatId || 519855715;\n\n\nconst success = true; \n\nif (success) {\n    return [{\n        json: {\n            chatId: chatId,\n            text: `🗑️ *Список продуктов очищен!*\\n\\n\\n\\n➕ Добавить новые продукты: \\`/add [продукт]\\``,\n            parse_mode: 'Markdown'\n        }\n    }];\n} else {\n    return [{\n        json: {\n            chatId: chatId,\n            text: \"❌ Не удалось очистить список. Попробуйте позже.\"\n        }\n    }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        416
+      ],
+      "id": "6b9aea34-510a-4915-abfb-6dd2b0405e4b",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "add",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "clear",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message2": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "products": {
+      "main": [
+        [
+          {
+            "node": "Send a text message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "clear": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "products",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "recipe": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "recipe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete rows or columns from sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message5": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a text message5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9216951b-be8f-46a5-9ece-a39b539fc174",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "813e494a5ef372c49c27b60840ec484c9bfec4138fc0f9e44c067ce24603533a"
+  },
+  "id": "YPTqFDdHJBZvw4g2",
+  "tags": []
+}
