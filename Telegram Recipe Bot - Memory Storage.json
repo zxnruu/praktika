@@ -267,7 +267,7 @@
     },
     {
       "parameters": {
-        "jsCode": "\nconst allInputs = $input.all();\n\n\nif (allInputs.length < 2) {\n\n    const inputData = allInputs[0]?.json || {};\n    const message = inputData.message || inputData;\n    \n    const text = message.text || '';\n    let product = '';\n    \n    if (text.startsWith('/add ')) {\n        product = text.substring(5).trim().toLowerCase();\n    } else {\n        product = text.replace('/add', '').trim().toLowerCase();\n    }\n    \n    return [{\n        json: {\n            charId: message.chat?.id || message.from?.id || 'unknown',\n            text: `Продукт \"${product}\" сохранен в Google Sheets`\n        }\n    }];\n} else {\n\n    const message = allInputs[1]?.json?.message || allInputs[1]?.json || {};\n    \n    const text = message.text || '';\n    let product = '';\n    \n    if (text.startsWith('/add ')) {\n        product = text.substring(5).trim().toLowerCase();\n    } else {\n        product = text.replace('/add', '').trim().toLowerCase();\n    }\n    \n    return [{\n        json: {\n            charId: message.chat?.id || message.from?.id || 'unknown',\n            text: `Продукт \"${product}\" сохранен в Google Sheets`\n        }\n    }];\n}"
+        "jsCode": "\nconst allInputs = $input.all();\n\n\nif (allInputs.length < 2) {\n\n    const inputData = allInputs[0]?.json || {};\n    const message = inputData.message || inputData;\n    \n    const text = message.text || '';\n    let product = '';\n    \n    if (text.startsWith('/add ')) {\n        product = text.substring(5).trim().toLowerCase();\n    } else {\n        product = text.replace('/add', '').trim().toLowerCase();\n    }\n    \n    return [{\n        json: {\n            charId: message.chat?.id || message.from?.id || 'unknown',\n            text: `Продукт \"${product}\" сохранен в список`\n        }\n    }];\n} else {\n\n    const message = allInputs[1]?.json?.message || allInputs[1]?.json || {};\n    \n    const text = message.text || '';\n    let product = '';\n    \n    if (text.startsWith('/add ')) {\n        product = text.substring(5).trim().toLowerCase();\n    } else {\n        product = text.replace('/add', '').trim().toLowerCase();\n    }\n    \n    return [{\n        json: {\n            charId: message.chat?.id || message.from?.id || 'unknown',\n            text: `Продукт \"${product}\" сохранен в список`\n        }\n    }];\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -293,7 +293,7 @@
     },
     {
       "parameters": {
-        "jsCode": "\ntry {\n    console.log('=== ЗАПУСК /myproducts ===');\n    \n\n    const telegramData = $input.first().json || {};\n    const chatId = telegramData.message?.chat?.id || 519855715;\n    \n    console.log('Chat ID из Telegram:', chatId);\n    console.log('Всего входов:', $input.all().length);\n    \n\n    let allProducts = [];\n    \n\n    for (let i = 0; i < $input.all().length; i++) {\n        const input = $input.all()[i];\n        \n        if (input.json) {\n            console.log(`Вход ${i}:`, JSON.stringify(input.json, null, 2));\n            \n\n            if (Array.isArray(input.json)) {\n                input.json.forEach(item => {\n                    if (item && item.json) {\n                        const row = item.json;\n                        if (String(row.user_id) === String(chatId) && row.product_name) {\n                            allProducts.push(String(row.product_name).trim());\n                        }\n                    }\n                });\n            }\n\n            else if (input.json.user_id && input.json.product_name) {\n                if (String(input.json.user_id) === String(chatId)) {\n                    allProducts.push(String(input.json.product_name).trim());\n                }\n            }\n        }\n    }\n    \n    console.log('Найдено продуктов:', allProducts);\n    \n\n    if (allProducts.length === 0) {\n        return [{\n            json: {\n                chatId: chatId,\n                text: \"📭 *Список пуст*\\n\\nПопробуйте добавить:\\n`/add сыр`\\n`/add молоко`\\n`/add хлеб`\"\n            }\n        }];\n    }\n    \n\n    let reply = \"📋 *Ваши продукты:*\\n\\n\";\n    \n    allProducts.forEach((item, index) => {\n        reply += `${index + 1}. ${item}\\n`;\n    });\n    \n    reply += `\\n✅ Всего: *${allProducts.length}*\\n`;\n    reply += `\\n➕ Добавить: /add [продукт]`;\n    \n    console.log('Отправляем:', reply);\n    \n    return [{\n        json: {\n            chatId: chatId,\n            text: reply\n        }\n    }];\n    \n} catch (error) {\n    console.error('ОШИБКА:', error);\n    return [{\n        json: {\n            chatId: 519855715,\n            text: \"⚠️ Ошибка загрузки списка\"\n        }\n    }];\n}"
+        "jsCode": "try {\nconsole.log('=== ЗАПУСК /myproducts ===');\n\n\nconst telegramData = $input.first().json || {};\nconst chatId = telegramData.message?.chat?.id || 519855715;\n\nconsole.log('Chat ID из Telegram:', chatId);\nconsole.log('Всего входов:', $input.all().length);\n\n\nlet allProducts = [];\n\n\nfor (let i = 0; i < $input.all().length; i++) {\nconst input = $input.all()[i];\n\nif (input.json) {\nconsole.log(`Вход ${i}:`, JSON.stringify(input.json, null, 2));\n\n\nif (Array.isArray(input.json)) {\ninput.json.forEach(item => {\nif (item && item.json) {\nconst row = item.json;\nif (String(row.user_id) === String(chatId) && row.product_name) {\nallProducts.push(String(row.product_name).trim());\n}\n}\n});\n}\n\nelse if (input.json.user_id && input.json.product_name) {\nif (String(input.json.user_id) === String(chatId)) {\nallProducts.push(String(input.json.product_name).trim());\n}\n}\n}\n}\n\nconsole.log('Найдено продуктов:', allProducts);\n\n\nif (allProducts.length === 0) {\nreturn [{\njson: {\nchatId: chatId,\ntext: \"📭 *Список пуст*\\n\\nПопробуйте добавить:\\n`/add сыр`\\n`/add молоко`\\n`/add хлеб`\"\n}\n}];\n}\n\n\nlet reply = \"📋 *Ваши продукты:*\\n\\n\";\n\nallProducts.forEach((item, index) => {\nreply += `${index + 1}. ${item}\\n`;\n});\n\nreply += `\\n✅ Всего: *${allProducts.length}*\\n`;\nreply += `\\n➕ Добавить: /add [продукт]`;\n\nconsole.log('Отправляем:', reply);\n\nreturn [{\njson: {\nchatId: chatId,\ntext: reply\n}\n}];\n\n} catch (error) {\nconsole.error('ОШИБКА:', error);\nreturn [{\njson: {\nchatId: 519855715,\ntext: \"⚠️ Ошибка загрузки списка\"\n}\n}];\n}"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -312,7 +312,7 @@
       "typeVersion": 2,
       "position": [
         -32,
-        304
+        256
       ],
       "id": "262a174b-fe29-4660-b0c5-818bdc86a470",
       "name": "clear"
@@ -394,8 +394,8 @@
               "removed": false
             },
             {
-              "id": "chatId",
-              "displayName": "chatId",
+              "id": "chall_id",
+              "displayName": "chall_id",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -474,21 +474,21 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        640,
-        144
+        624,
+        48
       ],
       "id": "abc6cfd7-5cd6-464b-aaa6-67494831ad40",
       "name": "Code in JavaScript1"
     },
     {
       "parameters": {
-        "jsCode": "\nconst telegramData = $input.first().json || {};\nconst chatId = telegramData.message?.chat?.id || 519855715;\n\n\nlet products = [];\nfor (let i = 1; i < $input.all().length; i++) {\n    const input = $input.all()[i];\n    if (input?.json && String(input.json.user_id) === String(chatId) && input.json.product_name) {\n        let p = String(input.json.product_name).trim().toLowerCase();\n        const fix = {'cbp':'сыр', 'monoko':'молоко', 'aiiya':'яйца', 'o':''};\n        p = fix[p] || p;\n        if (p && p !== 'o') products.push(p);\n    }\n}\n\nconst uniqueProducts = [...new Set(products.filter(p => p))];\n\n\nif (uniqueProducts.length === 0) {\n    return [{ json: { chatId: chatId, text: \"📭 Нет продуктов!\" } }];\n}\n\n\nreturn [{\n    json: {\n        prompt: `Рецепт из: ${uniqueProducts.join(', ')}. На русском.`,\n        temperature: 0.7\n    }\n}];"
+        "jsCode": "try {\n    console.log('=== Генерация рецепта ===');\n    console.log('ПЕРВЫЙ INPUT:', JSON.stringify($input.first()?.json, null, 2));\n    \n    // Гибкое извлечение chatId из разных возможных структур\n    let chatId = null;\n    \n    // Вариант 1: Стандартный Telegram webhook\n    const telegramData = $input.first()?.json || {};\n    chatId = telegramData.message?.chat?.id || \n             telegramData.chat?.id || \n             telegramData.from?.id;\n    \n    // Вариант 2: Если chatId в другом input\n    if (!chatId) {\n        for (let input of $input.all()) {\n            chatId = input.json?.chat?.id || \n                    input.json?.message?.chat?.id ||\n                    input.json?.user_id;\n            if (chatId) break;\n        }\n    }\n    \n    // ВАЖНО: временный fallback для теста (потом удалить)\n    if (!chatId) chatId = 519855715;\n    \n    console.log(`✅ Chat ID найден: ${chatId}`);\n    \n    // Словарь замен\n    const productMap = {\n        'cbp': 'сыр', 'monoko': 'молоко', 'aiiya': 'яйца', 'o': ''\n    };\n    \n    const products = new Set();\n    \n    // Ищем продукты с учетом разных структур\n    for (let i = 0; i < $input.all().length; i++) {  // с 0, не с 1!\n        const input = $input.all()[i];\n        console.log(`Input ${i}:`, input.json ? 'ДА' : 'НЕТ');\n        \n        if (input?.json) {\n            // Структура 1: прямой объект\n            if (input.json.user_id && input.json.product_name) {\n                if (String(input.json.user_id) === String(chatId)) {\n                    const p = String(input.json.product_name).trim().toLowerCase();\n                    const normalized = productMap[p] || p;\n                    if (normalized && normalized !== '') products.add(normalized);\n                }\n            }\n            // Структура 2: массив объектов\n            else if (Array.isArray(input.json)) {\n                for (let item of input.json) {\n                    if (item?.user_id && item.product_name &&\n                        String(item.user_id) === String(chatId)) {\n                        const p = String(item.product_name).trim().toLowerCase();\n                        const normalized = productMap[p] || p;\n                        if (normalized && normalized !== '') products.add(normalized);\n                    }\n                }\n            }\n        }\n    }\n    \n    const uniqueProducts = Array.from(products);\n    console.log(`Продукты: [${uniqueProducts.join(', ')}]`);\n    \n    if (uniqueProducts.length === 0) {\n        return [{ json: { \n            chatId, \n            text: \"📭 *Нет продуктов!*\\n\\n• `/add сыр`\\n• `/add молоко`\" \n        } }];\n    }\n    \n    return [{\n        json: {\n            prompt: `Рецепт из: ${uniqueProducts.join(', ')}. На русском.`,\n            temperature: 0.7,\n            chatId\n        }\n    }];\n    \n} catch (error) {\n    console.error('ОШИБКА:', error);\n    return [{ json: { chatId: 519855715, text: \"⚠️ Ошибка сервера\" } }];\n}\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        160,
-        160
+        128,
+        48
       ],
       "id": "7f7189ac-4bbb-4ca8-8708-d4f5117e2f98",
       "name": "recipe"
@@ -504,8 +504,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        848,
-        112
+        832,
+        48
       ],
       "id": "b6b3c213-b823-4639-ac72-057d19e24942",
       "name": "Send a text message4",
@@ -543,8 +543,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.1,
       "position": [
-        304,
-        176
+        288,
+        48
       ],
       "id": "ec6a7523-db52-474b-8a9c-b2e905df5c84",
       "name": "Message a model1",
@@ -566,8 +566,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        608,
-        416
+        592,
+        256
       ],
       "id": "c4cc5798-c440-49d0-bc5c-78a22c5c3cc2",
       "name": "Send a text message5",
@@ -609,7 +609,7 @@
       "typeVersion": 4.7,
       "position": [
         -32,
-        80
+        48
       ],
       "id": "c1e67af1-e748-46da-a43f-c144def5f602",
       "name": "Get row(s) in sheet1",
@@ -637,13 +637,13 @@
           "cachedResultName": "Лист1",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1LD4USPJMCcjZPdlGBd6hiDwxw5gCTs37EURFxyPCyL8/edit#gid=0"
         },
-        "numberToDelete": 3
+        "numberToDelete": 2
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        192,
-        384
+        176,
+        256
       ],
       "id": "90e91021-34b6-45f3-a96e-58015232cb0b",
       "name": "Delete rows or columns from sheet",
@@ -661,8 +661,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        416,
-        416
+        384,
+        256
       ],
       "id": "6b9aea34-510a-4915-abfb-6dd2b0405e4b",
       "name": "Code in JavaScript"
@@ -870,11 +870,11 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "9216951b-be8f-46a5-9ece-a39b539fc174",
+  "versionId": "a6e4b2c0-0c61-40cf-8945-f441715c3c0a",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "813e494a5ef372c49c27b60840ec484c9bfec4138fc0f9e44c067ce24603533a"
